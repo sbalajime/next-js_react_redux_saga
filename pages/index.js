@@ -5,6 +5,16 @@ import { getjoke } from "../redux/joke/actions";
 import {END} from 'redux-saga';
 
 class  ApiData extends Component {
+  static getInitialProps = async (ctx) => {
+    if(ctx.req) {
+      await ctx.store.dispatch(getjoke());
+      await ctx.store.dispatch(END);
+      await ctx.store.sagaTask.toPromise();
+      
+    }
+    
+  }
+
     componentDidMount(){
         // this.props.getjoke()
     }
@@ -25,16 +35,9 @@ const mapStateToProps = ({ jokeReducer }) => {
     return { joke };
   };
   
-  export default wrapper.withRedux(connect(mapStateToProps, null)(ApiData));
+  export default wrapper.withRedux(connect(mapStateToProps, {getjoke})(ApiData));
   
 
 
 
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  async ({store, req, res, ...etc}) => {
-    await store.dispatch(getjoke());
-    await store.dispatch(END);
-    await store.sagaTask.toPromise();
-  }
-);
