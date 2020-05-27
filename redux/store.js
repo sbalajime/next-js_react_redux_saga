@@ -9,7 +9,7 @@ const sagaMiddleware = createSagaMiddleware();
 const middlewares = [sagaMiddleware];
 
 export function configureStore(initialState, options) {
-    console.log('initialState', initialState)
+
 
     const store = createStore(
         reducers,
@@ -17,7 +17,8 @@ export function configureStore(initialState, options) {
         compose(applyMiddleware(...middlewares))
     );
 
-    sagaMiddleware.run(sagas);
+    // sagaMiddleware.run(sagas);
+    store.sagaTask = sagaMiddleware.run(sagas)
 
     if (module.hot) {
         module.hot.accept('./reducers', () => {

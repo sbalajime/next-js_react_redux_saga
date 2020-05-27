@@ -10,8 +10,7 @@ export default (state = INIT_STATE, action) => {
         case HYDRATE:
             console.log('hydrate', action.payload)
             return {...state, ...action.payload.jokeReducer};
-        case GET_JOKE.REQUEST:
-            console.log('req going');            
+        case GET_JOKE.REQUEST:        
             return { ...state, loading: true, err: false, msg: '', joke: {} };
         case GET_JOKE.SUCCESS:
             console.log('req success', action.payload); 

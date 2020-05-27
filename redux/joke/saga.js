@@ -10,8 +10,8 @@ import { getjokeURL } from "./services";
 
 function* getjokes({ payload }) {
    try {
-      const response = {type:'success', joke:'this is a joke'} //static data
-      // const response = yield call(getRaffleUrl, payload); //api data
+      // const response = {type:'success', joke:'this is a joke'} //static data
+      const response = yield call(getjokeURL, payload); //api data
       if (response.error) {
          console.log('response error')
          yield put(getjokeFailed(response.error));

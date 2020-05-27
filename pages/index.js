@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { connect} from 'react-redux';
 import {wrapper} from '../redux/store';
 import { getjoke } from "../redux/joke/actions";
+import {END} from 'redux-saga';
 
 class  ApiData extends Component {
     componentDidMount(){
@@ -11,7 +12,7 @@ class  ApiData extends Component {
         console.log('this.props', this.props)
         return(<div>
             <h1>Data from redux:</h1>
-        <h1>{this.props.joke.joke}</h1>
+        <h1>{JSON.stringify(this.props.joke)}</h1>
             </div>)
     }
        
@@ -31,8 +32,9 @@ const mapStateToProps = ({ jokeReducer }) => {
 
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  ({store, req, res, ...etc}) => {
-    store.dispatch(getjoke());
-    console.log('store', store.getState());
+  async ({store, req, res, ...etc}) => {
+    await store.dispatch(getjoke());
+    await store.dispatch(END);
+    await store.sagaTask.toPromise();
   }
 );
